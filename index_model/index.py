@@ -1,14 +1,17 @@
 import datetime as dt
 import pandas as pd
+import os
 
 class IndexModel:
     def __init__(self) -> None:
-        # Load the stock prices data
-        self.df = pd.read_csv(r'C:\Users\Fangluan\Desktop\Solactive\Assessment-Index-Modelling\stock_prices.csv')
+        # Use relative path for portability
+        file_path = os.path.join(os.path.dirname(__file__), "..", "data_sources", "stock_prices.csv")
+        self.df = pd.read_csv(file_path)
+
         self.df['Date'] = pd.to_datetime(self.df['Date'], format='%d/%m/%Y')
         self.df.set_index('Date', inplace=True)
         self.df.sort_index(inplace=True)
-        self.index_df = None  # Will hold the final index DataFrame
+        self.index_df = None
 
     def calc_index_level(self, start_date: dt.date, end_date: dt.date) -> None:
         df = self.df
